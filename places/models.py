@@ -10,3 +10,15 @@ class Place(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PlaceImage(models.Model):
+    image = models.ImageField(upload_to='places/')
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='images')
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Image for {self.place.title}"
