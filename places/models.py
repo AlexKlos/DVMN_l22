@@ -15,7 +15,7 @@ class Place(models.Model):
 class PlaceImage(models.Model):
     image = models.ImageField(upload_to='places/')
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='images')
-    order = models.PositiveIntegerField(default=0)
+    order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
     class Meta:
         ordering = ['order']
