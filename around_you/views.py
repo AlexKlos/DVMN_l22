@@ -2,6 +2,7 @@ import json
 
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 from places.models import Place
 
@@ -9,6 +10,7 @@ from places.models import Place
 def show_index(request):
     features = []
     for place in Place.objects.all():
+        details_url = reverse('place_details', args=[place.pk])
         features.append({
             "type": "Feature",
             "geometry": {
@@ -18,7 +20,7 @@ def show_index(request):
             "properties": {
                 "title": place.title,
                 "placeId": f"place_{place.pk}",
-                "detailsUrl": f"/places/{place.pk}.json"
+                "detailsUrl": details_url
             }
         })
     geojson = {
