@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -5,7 +7,26 @@ from places.models import Place
 
 
 def show_index(request):
-    return render(request, 'index.html')
+    features = []
+    for place in Place.objects.all():
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [place.lng, place.lat]
+            },
+            "properties": {
+                "title": place.title,
+                "placeId": f"place_{place.pk}",
+                "detailsUrl": f"/places/{place.pk}.json"
+            }
+        })
+    geojson = {
+        "type": "FeatureCollection",
+        "features": features,
+    }
+    context = {"places_geojson": json.dumps(geojson, ensure_ascii=False)}
+    return render(request, 'index.html', context)
 
 
 def get_place_details(request, place_id):
