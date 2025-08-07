@@ -16,7 +16,7 @@ class PlaceImageInline(admin.TabularInline):
 
 
 class PlaceAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title', 'id',)
     inlines = [PlaceImageInline]
 
 admin.site.register(Place, PlaceAdmin)

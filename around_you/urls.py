@@ -19,11 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from around_you import views
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.show_index)
+    path('', views.show_index),
+    path('places/<int:place_id>.json', views.get_place_details, name='place_details'),
 ]
 
 if settings.DEBUG:
