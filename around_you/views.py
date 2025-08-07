@@ -1,7 +1,7 @@
 import json
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from places.models import Place
 
@@ -30,7 +30,7 @@ def show_index(request):
 
 
 def get_place_details(request, place_id):
-    place = Place.objects.get(pk=place_id)
+    place = get_object_or_404(Place, pk=place_id)
     images = [request.build_absolute_uri(img.image.url) for img in place.images.all()]
     place_details = {
         "title": place.title,

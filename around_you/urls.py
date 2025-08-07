@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.show_index),
     path('places/<int:place_id>.json', views.get_place_details, name='place_details'),
+    path('places/<int:place_id>', views.get_place_details, name='place_details'),
 ]
 
 if settings.DEBUG:
