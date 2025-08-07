@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.show_index),
     path('places/<int:place_id>.json', views.get_place_details, name='place_details'),
     path('places/<int:place_id>', views.get_place_details, name='place_details'),
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 if settings.DEBUG:
