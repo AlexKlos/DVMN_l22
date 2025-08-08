@@ -1,72 +1,86 @@
-# Devman Notifier Bot
+# Куда пойти
 
-Телеграм-бот для рассылки уведомлений о проверенных работах курса [Devman](https://dvmn.org).
+Сайт о самых интересных местах в Москве.
 
-## Структура проекта
+![Главная страница](main_page.png)
 
-```
-project_root/
-├─ main.py             # Основной скрипт
-├─ .env                # Настройки
-└─ requirements.txt    # Зависимости
-```
+## Требования проекта
+
+- Python: 3.10–3.13
+- Django: 5.1.x
+- python-dotenv: 1.x
+- Pillow: 11.3.x (для работы с изображениями)
+- django-admin-sortable2: 2.2.x (сортировка объектов в админке)
+- django-tinymce: 4.1.x (редактор HTML в админке)
 
 ## Установка и настройка
 
 1. Клонируйте репозиторий:
 
-```bash
-git clone https://github.com/AlexKlos/DVMN_l21.git
-```
+   ```bash
+   git clone https://github.com/AlexKlos/DVMN_l22.git
+   ```
 
 2. Создайте виртуальное окружение а папке проекта:
 
-```bash
-python -m venv venv
-source venv/bin/activate  # или venv\Scripts\activate на Windows
-```
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # или venv\Scripts\activate на Windows
+   ```
 
 3. Установите зависимости:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-4. Создайте телеграм-бота и получите токен:
-    - Откройте Telegram и найдите бота по имени: `@BotFather`.
-    - Напишите ему команду `/start` (если ранее не общались).
-    - Отправьте `/newbot` для создания нового бота.
-    - BotFather попросит ввести имя бота:
-        - Пример: `Devman Notifier Bot`
-    - Затем попросит ввести юзернейм бота (должен заканчиваться на `bot`):
-        - Пример: `DevmanNotifierBot`
-    - После успешного создания BotFather вернёт вам токен вашего бота. Он будет в формате:
-        - `123456789:ABC-DEF1234ghIkl-zyx57W2v1u123ew11`
-        - Этот токен необходимо сохранить в `.env` файле (см. далее).
+4. Создайте ключ Django:
+   ```bash
+   python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+   ```
 
-5. Получите свой `chat_id`:
-    - Отправьте любое сообщение боту `@userinfobot` в Телеграм
-    - В ответном сообщении будет ваш `chat_id` в формате:
-        - `123456789`
-        - Этот id необходимо сохранить в `.env` файле (см. далее).
+5. Создайте и настройте файл `.env`:
 
-6. Настройте файл `.env`:
+   ```env
+   DJANGO_SECRET_KEY=...                      # Ключ Django
+   DJANGO_DEBUG=False                         # Режим разработки (False для продакшн)
+   DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost   # Разрешённые хосты (через запятую, без пробелов)
+   DJANGO_TIME_ZONE=Asia/Bangkok              # Часовой пояс проекта
+   DJANGO_LANGUAGE_CODE=en-us                 # Язык интерфейса
+   DJANGO_MEDIA_ROOT=media                    # Папка для пользовательских файлов (media)
+   DJANGO_STATIC_ROOT=staticfiles             # Папка для собранных статических файлов (staticfiles)
+   ```
 
-```env
-DEVMAN_API_TOKEN=Token 18fu2veuudvwe897234hio2fe6twwsdgsd286t324gl
-TG_API_KEY=123456789:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
-TG_CHAT_ID=123456789
-```
+7. Примените миграции:
+   ```bash
+   python manage.py migrate
+   ```
 
-7. Запустите скрипт:
-```
-python main.py
-```
+8. Создайте суперпользователя Django:
+   ```bash
+   python manage.py createsuperuser
+   ```
 
-8. При первом использовании обязательно отправьте боту какое-либо сообщение, что бы он мог вам отправлять сообщения следующего формата:
+9. Запустите сервер разработки:
+   ```bash
+   python manage.py runserver
+   ```
 
-![interface](screenshot.png)
+## Использование
+
+- После запуска сайт будет доступен по адресу:
+   ```
+   http://127.0.0.1:8000
+   ```
+
+- Редактирование данных через панель администратора по адресу:
+   ```
+   http://127.0.0.1:8000/admin/
+   ```
+   Доступ по реквизитам суперпользователя Django (см. п.7.)
 
 ## Цели проекта
 
 Код написан в учебных целях — для курса по Python и веб-разработке на сайте [Devman](https://dvmn.org).
+
+Тестовые данные взяты с сайта [KudaGo](https://kudago.com).
