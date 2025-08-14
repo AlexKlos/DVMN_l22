@@ -3,3 +3,4 @@ python-dotenv==1.*
 pillow==11.3.*
 django-admin-sortable2==2.2.*
 django-tinymce==4.1.*
+requests==2.*
