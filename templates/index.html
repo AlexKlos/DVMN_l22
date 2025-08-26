@@ -38,9 +38,7 @@
       width: 100px;
     }
   </style>
-  <script id="places-geojson" type="application/json">
-    {{ places_geojson|safe }}
-  </script>
+  {{ places_geojson|json_script:"places-geojson" }}
 
   <script id="app-template" type="text/template">
     <div v-bind:class="{'sidebar-content': 1, 'bg-white': selectedPlace, 'bg-secondary': !selectedPlace}">
@@ -149,18 +147,8 @@
       }
     }).addTo(map);
 
-    function loadJSON(elementId){
-      let element = document.getElementById(elementId);
 
-      if (!element){
-        log.error(`Not found element with id '${elementId}'.`)
-        return null;
-      }
-
-      return JSON.parse(element.textContent);
-    }
-
-    let places = loadJSON('places-geojson');
+    const places = JSON.parse(document.getElementById('places-geojson').textContent);
     log.debug('Load GeoJSON for places', places);
 
 

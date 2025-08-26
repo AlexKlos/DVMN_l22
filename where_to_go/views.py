@@ -1,5 +1,3 @@
-import json
-
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -27,7 +25,7 @@ def show_index(request):
         "type": "FeatureCollection",
         "features": features,
     }
-    context = {"places_geojson": json.dumps(geojson, ensure_ascii=False)}
+    context = {"places_geojson": geojson}
     return render(request, 'index.html', context)
 
 
