@@ -1,5 +1,5 @@
 """
-ASGI config for around_you project.
+ASGI config for where_to_go project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'around_you.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'where_to_go.settings')
 
 application = get_asgi_application()

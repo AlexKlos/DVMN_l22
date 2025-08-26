@@ -21,7 +21,7 @@
    git clone https://github.com/AlexKlos/DVMN_l22.git
    ```
 
-2. Создайте виртуальное окружение а папке проекта:
+2. Создайте виртуальное окружение в папке проекта:
 
    ```bash
    python -m venv venv
