@@ -35,8 +35,8 @@ def get_place_details(request, place_id):
     place_details = {
         "title": place.title,
         "imgs": images,
-        "description_short": place.description_short,
-        "description_long": place.description_long,
+        "short_description": place.short_description,
+        "long_description": place.long_description,
         "coordinates": {
             "lng": place.lng,
             "lat": place.lat
