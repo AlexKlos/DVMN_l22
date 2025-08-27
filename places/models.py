@@ -26,4 +26,4 @@ class PlaceImage(models.Model):
         ]
 
     def __str__(self):
-        return f"Image for {self.place.title}"
+        return f'Image for {self.place.title}'
