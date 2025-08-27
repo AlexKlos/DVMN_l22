@@ -21,8 +21,5 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ('title', 'id',)
     inlines = [PlaceImageInline]
     search_fields = ['title']
-    formfield_overrides = {
-        models.TextField: {'widget': TinyMCE(attrs={'cols': 100, 'rows': 20})},
-    }
 
 admin.site.register(Place, PlaceAdmin)
