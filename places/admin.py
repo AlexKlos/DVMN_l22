@@ -13,7 +13,7 @@ class PlaceImageInline(SortableStackedInline):
     readonly_fields = ['image_preview']
 
     def image_preview(self, obj):
-        return format_html('<img src="{}" style="height: 80px;"/>', obj.image.url)
+        return format_html('<img src="{}" style="max-height: 80px; max-width: 150px"/>', obj.image.url)
 
 
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
