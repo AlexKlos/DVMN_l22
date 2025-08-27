@@ -10,6 +10,7 @@ class PlaceImageInline(SortableStackedInline):
     model = PlaceImage
     extra = 1
     fields = ('image', 'image_preview')
+    autocomplete_fields = ('place',)
     readonly_fields = ['image_preview']
 
     def image_preview(self, obj):
