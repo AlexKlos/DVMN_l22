@@ -107,6 +107,43 @@
    }
    ```
 
+## Структура проекта
+
+```
+project_root/
+├─ manage.py               # Точка входа CLI Django (migrate, runserver и т.д.)
+├─ requirements.txt        # Зависимости проекта
+├─ .env                    # Переменные окружения
+├─ db.sqlite3              # База данных
+├─ where_to_go/            # Пакет проекта where_to_go
+│ ├─ settings.py             # Настройки проекта
+│ ├─ urls.py                 # URL’ы проекта
+│ ├─ wsgi.py                 # Точка входа Gunicorn
+│ └─ asgi.py                 # Точка входа ASGI
+├─ places/                 # Пакет приложения places
+│ ├─ apps.py                 # Настройки приложения
+│ ├─ models.py               # Модели
+│ ├─ admin.py                # Админка
+│ ├─ views.py                # Вьюхи для шаблона
+│ ├─ management/             # Management commands
+│ │ └─ commands/
+│ │   └─ load_place.py         # Команда: python manage.py load_place <url.json>
+│ └─ migrations/             # Миграции моделей
+│   ├─ 0001_initial.py …
+│   └─ …
+├─ templates/              # Шаблоны страниц сайта
+│ └─ index.html              # Главная
+├─ static/                 # Статика
+│ ├─ css/                    # Стили
+│ │ └─ leaflet-sidebar.css     # Стиль сайдбара
+│ ├─ js/                     # Скрипты
+│ │ └─ leaflet-sidebar.js      # Скрипт сайдбара
+│ ├─ favicon.png
+│ └─ hand-pointer-regular.svg
+└─ media/                  # Медиафайлы
+  └─ places/…                 # Загруженные изображения
+```
+
 ## Цели проекта
 
 Код написан в учебных целях — для курса по Python и веб-разработке на сайте [Devman](https://dvmn.org).
