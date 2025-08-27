@@ -21,6 +21,9 @@ class PlaceImage(models.Model):
 
     class Meta:
         ordering = ['order']
+        indexes = [
+            models.Index(fields=['place', 'order'], name='place_order_idx'),
+        ]
 
     def __str__(self):
         return f"Image for {self.place.title}"
