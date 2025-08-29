@@ -79,8 +79,7 @@ class Command(BaseCommand):
             for idx, img_url in enumerate(imgs):
                 content = self._download_bytes(img_url)
                 filename = f'{base_name}_{idx}.jpg'
-                pic = PlaceImage(place=place, order=idx)
-                pic.image.save(filename, ContentFile(content), save=True)
+                PlaceImage.objects.create(place=place, order=idx, image=ContentFile(content, name=filename))
 
         self.stdout.write(
             self.style.SUCCESS(
