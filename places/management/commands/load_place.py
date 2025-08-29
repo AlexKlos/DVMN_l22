@@ -44,7 +44,16 @@ class Command(BaseCommand):
         if not title:
             raise CommandError('Поле "title" пустое.')
 
-        if Place.objects.filter(title=title).exists():
+        place, created = Place.objects.get_or_create(
+            title=title,
+            defaults={
+                'description_short': description_short,
+                'description_long': description_long,
+                'lng': lng,
+                'lat': lat,
+            }
+        )
+        if not created:
             raise CommandError(f'Место с таким title уже существует: "{title}"')
 
         try:
