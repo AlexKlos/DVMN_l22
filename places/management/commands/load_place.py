@@ -26,21 +26,21 @@ class Command(BaseCommand):
         response.raise_for_status()
         return response.content
 
-    def _validate(self, place_data):
+    def _validate(self, place_info):
         for field in ('title', 'description_short', 'description_long', 'coordinates'):
-            if field not in place_data:
+            if field not in place_info:
                 raise CommandError(f'В JSON отсутствует обязательное поле: "{field}"')
-        coords = place_data['coordinates']
+        coords = place_info['coordinates']
         if 'lng' not in coords or 'lat' not in coords:
             raise CommandError('В JSON.coordinates отсутствуют "lng" или "lat"')
 
     def handle(self, *args, **options):
         url = options['url']
 
-        place_data = self._load_json(url)
-        self._validate(place_data)
+        place_info = self._load_json(url)
+        self._validate(place_info)
 
-        title = (place_data['title'] or '').strip()
+        title = (place_info['title'] or '').strip()
         if not title:
             raise CommandError('Поле "title" пустое.')
 
@@ -48,14 +48,14 @@ class Command(BaseCommand):
             raise CommandError(f'Место с таким title уже существует: "{title}"')
 
         try:
-            lng = float(place_data['coordinates']['lng'])
-            lat = float(place_data['coordinates']['lat'])
+            lng = float(place_info['coordinates']['lng'])
+            lat = float(place_info['coordinates']['lat'])
         except (TypeError, ValueError):
             raise CommandError('Некорректные координаты: ожидаются числа (lng/lat).')
 
-        description_short = (place_data.get('description_short') or '').strip()
-        description_long = (place_data.get('description_long') or '').strip()
-        imgs = place_data.get('imgs') or []
+        description_short = (place_info.get('description_short') or '').strip()
+        description_long = (place_info.get('description_long') or '').strip()
+        imgs = place_info.get('imgs') or []
 
         with transaction.atomic():
             place = Place.objects.create(

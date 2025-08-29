@@ -13,8 +13,8 @@ LANGUAGE_CODE = env.str('DJANGO_LANGUAGE_CODE', 'en-us')
 TIME_ZONE = env.str('DJANGO_TIME_ZONE', 'UTC')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MEDIA_ROOT = env.str('DJANGO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 STATIC_ROOT = env.str('DJANGO_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+MEDIA_ROOT = env.str('DJANGO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 
 INTERNAL_IPS = [
     "127.0.0.1",
