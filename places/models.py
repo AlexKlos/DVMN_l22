@@ -9,6 +9,13 @@ class Place(models.Model):
     long_description = HTMLField(verbose_name='Полное описание', blank=True)
     lng = models.FloatField(verbose_name='Долгота')
     lat = models.FloatField(verbose_name='Широта')
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'lng', 'lat'],
+                name='unique_place_coords_title'
+            )
+        ]
 
     def __str__(self):
         return self.title
