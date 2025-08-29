@@ -1,4 +1,6 @@
 import requests
+import sys
+import time
 
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand, CommandError
@@ -77,7 +79,14 @@ class Command(BaseCommand):
 
             base_name = slugify(title, allow_unicode=True)
             for idx, img_url in enumerate(imgs):
-                content = self._download_bytes(img_url)
+                try:
+                    content = self._download_bytes(img_url)
+                except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError) as e:
+                    print(f'Ошибка при загрузке {img_url}: {e}', file=sys.stderr)
+                    if isinstance(e, requests.exceptions.ConnectionError):
+                        time.sleep(5)
+                    continue
+                
                 filename = f'{base_name}_{idx}.jpg'
                 PlaceImage.objects.create(place=place, order=idx, image=ContentFile(content, name=filename))
 
