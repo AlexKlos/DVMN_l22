@@ -22,7 +22,7 @@ class PlaceImage(models.Model):
     class Meta:
         ordering = ['order']
         indexes = [
-            models.Index(fields=['place', 'order'], name='place_order_idx'),
+            models.Index(fields=['order'], name='order_idx'),
         ]
 
     def __str__(self):
