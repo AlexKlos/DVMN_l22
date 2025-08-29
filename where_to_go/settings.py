@@ -7,12 +7,14 @@ from environs import env
 env.read_env()
 
 DEBUG = env.bool('DJANGO_DEBUG', True)
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
-LANGUAGE_CODE = env('DJANGO_LANGUAGE_CODE', 'en-us')
-TIME_ZONE = env('DJANGO_TIME_ZONE', 'UTC')
-MEDIA_ROOT = env('DJANGO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
-STATIC_ROOT = env('DJANGO_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+LANGUAGE_CODE = env.str('DJANGO_LANGUAGE_CODE', 'en-us')
+TIME_ZONE = env.str('DJANGO_TIME_ZONE', 'UTC')
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+MEDIA_ROOT = env.str('DJANGO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+STATIC_ROOT = env.str('DJANGO_STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -91,8 +93,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
