@@ -27,7 +27,7 @@ class Command(BaseCommand):
         return response.content
 
     def _validate(self, place_info):
-        for field in ('title', 'description_short', 'description_long', 'coordinates'):
+        for field in ('title', 'short_description', 'long_description', 'coordinates'):
             if field not in place_info:
                 raise CommandError(f'В JSON отсутствует обязательное поле: "{field}"')
         coords = place_info['coordinates']
@@ -47,8 +47,8 @@ class Command(BaseCommand):
         place, created = Place.objects.get_or_create(
             title=title,
             defaults={
-                'description_short': description_short,
-                'description_long': description_long,
+                'short_description': short_description,
+                'long_description': long_description,
                 'lng': lng,
                 'lat': lat,
             }
@@ -62,15 +62,15 @@ class Command(BaseCommand):
         except (TypeError, ValueError):
             raise CommandError('Некорректные координаты: ожидаются числа (lng/lat).')
 
-        description_short = (place_info.get('description_short') or '').strip()
-        description_long = (place_info.get('description_long') or '').strip()
+        short_description = (place_info.get('short_description') or '').strip()
+        long_description = (place_info.get('long_description') or '').strip()
         imgs = place_info.get('imgs') or []
 
         with transaction.atomic():
             place = Place.objects.create(
                 title=title,
-                description_short=description_short,
-                description_long=description_long,
+                short_description=short_description,
+                long_description=long_description,
                 lng=lng,
                 lat=lat,
             )
