@@ -2,6 +2,7 @@ import requests
 import sys
 import time
 
+from django.core.exceptions import MultipleObjectsReturned
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -45,6 +46,10 @@ class Command(BaseCommand):
         title = (place_info['title'] or '').strip()
         if not title:
             raise CommandError('Поле "title" пустое.')
+        
+        short_description = (place_info.get('short_description') or '').strip()
+        long_description = (place_info.get('long_description') or '').strip()
+        imgs = place_info.get('imgs') or []
 
         try:
             lng = float(place_info['coordinates']['lng'])
@@ -52,21 +57,20 @@ class Command(BaseCommand):
         except (TypeError, ValueError):
             raise CommandError('Некорректные координаты: ожидаются числа (lng/lat).')
         
-        place, created = Place.objects.get_or_create(
-            title=title,
-            defaults={
-                'short_description': short_description,
-                'long_description': long_description,
-                'lng': lng,
-                'lat': lat,
-            }
-        )
+        try:
+            place, created = Place.objects.get_or_create(
+                title=title,
+                lng=lng,
+                lat=lat,
+                defaults={
+                    'short_description': short_description,
+                    'long_description': long_description,
+                }
+            )
+        except MultipleObjectsReturned:
+            raise CommandError(f'Мест с таким title="{title}" и координатами ({lng}, {lat}) существует несколько. Внесите изменения в БД.')
         if not created:
-            raise CommandError(f'Место с таким title уже существует: "{title}"')
-
-        short_description = (place_info.get('short_description') or '').strip()
-        long_description = (place_info.get('long_description') or '').strip()
-        imgs = place_info.get('imgs') or []
+            raise CommandError(f'Место с таким title="{title}" и координатами ({lng}, {lat}) уже существует.')
 
         with transaction.atomic():
             base_name = slugify(title, allow_unicode=True)
