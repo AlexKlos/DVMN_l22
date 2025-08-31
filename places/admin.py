@@ -9,16 +9,22 @@ class PlaceImageInline(SortableStackedInline):
     model = PlaceImage
     extra = 1
     fields = ('image', 'image_preview')
-    autocomplete_fields = ('place',)
     readonly_fields = ['image_preview']
 
     def image_preview(self, obj):
         return format_html('<img src="{}" style="max-height: 80px; max-width: 150px"/>', obj.image.url)
 
 
+@admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ('title', 'id',)
     inlines = [PlaceImageInline]
     search_fields = ['title']
 
-admin.site.register(Place, PlaceAdmin)
+
+@admin.register(PlaceImage)
+class PlaceImageAdmin(admin.ModelAdmin):
+    list_display = ("id", "place", "order", "image")
+    search_fields = ("place__title",)
+    autocomplete_fields = ("place",)
+    list_filter = ("place",)
