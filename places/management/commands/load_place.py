@@ -46,6 +46,12 @@ class Command(BaseCommand):
         if not title:
             raise CommandError('Поле "title" пустое.')
 
+        try:
+            lng = float(place_info['coordinates']['lng'])
+            lat = float(place_info['coordinates']['lat'])
+        except (TypeError, ValueError):
+            raise CommandError('Некорректные координаты: ожидаются числа (lng/lat).')
+        
         place, created = Place.objects.get_or_create(
             title=title,
             defaults={
@@ -58,25 +64,11 @@ class Command(BaseCommand):
         if not created:
             raise CommandError(f'Место с таким title уже существует: "{title}"')
 
-        try:
-            lng = float(place_info['coordinates']['lng'])
-            lat = float(place_info['coordinates']['lat'])
-        except (TypeError, ValueError):
-            raise CommandError('Некорректные координаты: ожидаются числа (lng/lat).')
-
         short_description = (place_info.get('short_description') or '').strip()
         long_description = (place_info.get('long_description') or '').strip()
         imgs = place_info.get('imgs') or []
 
         with transaction.atomic():
-            place = Place.objects.create(
-                title=title,
-                short_description=short_description,
-                long_description=long_description,
-                lng=lng,
-                lat=lat,
-            )
-
             base_name = slugify(title, allow_unicode=True)
             for idx, img_url in enumerate(imgs):
                 try:
