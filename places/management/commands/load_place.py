@@ -30,7 +30,7 @@ class Command(BaseCommand):
         return response.content
 
     def _validate(self, place_info):
-        for field in ('title', 'short_description', 'long_description', 'coordinates'):
+        for field in ('title', 'description_short', 'description_long', 'coordinates'):
             if field not in place_info:
                 raise CommandError(f'В JSON отсутствует обязательное поле: "{field}"')
         coords = place_info['coordinates']
@@ -47,8 +47,8 @@ class Command(BaseCommand):
         if not title:
             raise CommandError('Поле "title" пустое.')
         
-        short_description = (place_info.get('short_description') or '').strip()
-        long_description = (place_info.get('long_description') or '').strip()
+        short_description = (place_info.get('description_short') or '').strip()
+        long_description = (place_info.get('description_long') or '').strip()
         imgs = place_info.get('imgs') or []
 
         try:
